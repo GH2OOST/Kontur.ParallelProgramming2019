@@ -56,14 +56,17 @@ namespace CustomPartitioner
 
 			Console.WriteLine("Parallel: {0} ms", parallelWorkingTime);
 			Console.WriteLine("Sequential: {0} ms", sequentialWorkingTime);
-			Console.WriteLine("Result stack traces are {0}equal and {1}correct",
-				parallelStackTraces
-					.OrderBy(trace => trace)
-					.SequenceEqual(
-						sequentialStackTraces.OrderBy(trace => trace)) ? "" : "not ",
-				//сообщение о методе, вызвавшем ошибку, не приклеивается
-				parallelStackTraces.Count == 4845
-					&& parallelStackTraces.Sum(trace => trace.Length) == 9539805 ? "" : "not ");
+            var areEqual = parallelStackTraces
+                .OrderBy(trace => trace)
+                .SequenceEqual(
+                    sequentialStackTraces.OrderBy(trace => trace));
+            var stackTracesCount = parallelStackTraces.Count;
+            var stackTracesSum = parallelStackTraces.Sum(trace => trace.Length);
+
+            Console.WriteLine("Result stack traces are {0}equal and {1}correct",
+                areEqual ? "" : "not ",
+                //сообщение о методе, вызвавшем ошибку, не приклеивается
+                stackTracesCount == 4845 && stackTracesSum == 9539805 ? "" : "not ");
 		}
 	}
 }
