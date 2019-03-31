@@ -27,27 +27,18 @@ namespace CustomPartitioner
             InitList(partitionCount, partitions);
             using (var linesEnumerator = lines.GetEnumerator())
             {
-                var chunkSize = 1;
                 var readAll = false;
                 while (!readAll)
                 {
                     foreach (var partition in partitions)
                     {
-                        for (var i = 0; i < chunkSize; i++)
+                        if (!linesEnumerator.MoveNext())
                         {
-                            if (!linesEnumerator.MoveNext())
-                            {
-                                readAll = true;
-                                break;
-                            }
-                            partition.Add(ParseCurrentString(linesEnumerator));
-                        }
-
-                        if (readAll)
+                            readAll = true;
                             break;
+                        }
+                        partition.Add(ParseCurrentString(linesEnumerator));
                     }
-
-                    chunkSize++;
                 }
             }
 
